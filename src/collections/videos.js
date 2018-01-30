@@ -1,21 +1,22 @@
 var Videos = Backbone.Collection.extend({
 
   model: Video,
-  url: 'https://www.googleleapis.com/youtube/v3/search',
+  url: 'https://www.googleapis.com/youtube/v3/search',
   
   search: function(query) {
     this.fetch({
       data: {
-        maxResults: 5,
         part: 'snippet',
+        maxResults: 5,
         q: query,
         key: window.YOUTUBE_API_KEY,
         type: 'video',
-        videoEmbeddable: 'true',
+        videoEmbeddable: true,
       }
     });
   },
   parse: function(response) {
+    console.log(response.items)
     return response.items;
   }
 });

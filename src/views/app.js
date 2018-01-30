@@ -4,14 +4,19 @@ var AppView = Backbone.View.extend({
 
   initialize: function() {
     this.videos = new Videos();
-    this.listenTo(this.videos, 'sync', this);
+    this.videos.search('glitchmob');
+    this.listenTo(this.videos, 'sync', this.firstVideo);
     this.render();
+    
   },
-
+  
+  firstVideo: function() {
+    this.videos.at(0).select();
+  },
 
   render: function() {
     this.$el.html(this.template());
-    this.$el.empty();
+
     
     new VideoPlayerView({
       model: this.videos.at(0),
@@ -22,6 +27,11 @@ var AppView = Backbone.View.extend({
     new VideoListView({
       collection: this.videos,
       el: this.$('.list'),
+    }).render();
+
+    new SearchView({
+      collection: this.videos,
+      el: this.$('.search'),
     }).render();
     
     return this;
